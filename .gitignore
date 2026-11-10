@@ -1,0 +1,22 @@
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Secrets
+.env
+.env.*
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Editor settings
+.vscode/
+
+# Logs
+logs/*.log
+
+# Raw transaction data
+data/*.csv

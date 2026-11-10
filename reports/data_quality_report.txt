@@ -1,0 +1,18 @@
+BANK TRANSACTION DATA QUALITY REPORT
+========================================
+Report generated: 2026-11-09 17:07:22
+
+Rows extracted: 8
+Duplicate rows detected: 0
+Rows after cleaning: 8
+Missing values detected: 0
+Rows loaded into PostgreSQL: 8
+
+Missing values by column:
+transaction_id: 0
+customer_id: 0
+amount: 0
+transaction_date: 0
+location: 0
+
+PIPELINE STATUS: SUCCESSFUL
