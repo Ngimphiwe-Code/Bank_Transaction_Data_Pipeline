@@ -130,3 +130,11 @@ GitHub: [View my projects](https://github.com/Ngimphiwe-Code)
 ---
 
 *This project is an educational portfolio project using sample transaction data. It is not affiliated with or endorsed by any financial institution.
+## Running Automated Tests
+
+This project uses pytest to verify data transformation logic.
+
+### Install pytest
+
+```bash
+python -m pip install pytest
