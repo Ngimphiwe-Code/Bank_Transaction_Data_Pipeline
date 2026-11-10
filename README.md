@@ -1,31 +1,44 @@
 # Bank Transaction Data Pipeline
 
+A Python-based ETL pipeline that extracts, cleans, validates, and loads bank transaction data into PostgreSQL for analysis.
+
 ## Project Overview
 
-This project is an end-to-end Data Engineering pipeline built with Python and PostgreSQL. It extracts bank transaction data from a CSV file, cleans and transforms the data, loads it into a PostgreSQL database, and generates a data quality report.
+This project demonstrates a practical data engineering workflow using Python, pandas, SQLAlchemy, and PostgreSQL. It automates the movement of transaction data from a CSV file into a relational database, while generating data quality reports and pipeline logs.
 
-The project demonstrates essential Data Engineering skills, including ETL development, data cleaning, database integration, SQL analytics, logging, and data quality monitoring.
+The project was built to develop practical skills in data processing, database integration, SQL analytics, and version control.
 
-## Project Objectives
+## Architecture
 
-- Build an automated ETL pipeline.
-- Extract transaction data from a CSV file.
-- Clean and transform transaction records using Python.
-- Load processed data into PostgreSQL.
-- Generate data quality reports.
-- Analyse transactions using SQL.
-- Record pipeline activities and errors using logging.
+```text
+Raw CSV Data
+     |
+     v
+Extract (Python / pandas)
+     |
+     v
+Transform and Clean
+     |
+     v
+Data Quality Checks
+     |
+     v
+Load into PostgreSQL
+     |
+     v
+SQL Analysis and Reporting
+```
 
 ## Technologies Used
 
-- **Python** — ETL development and data processing.
-- **Pandas** — Data cleaning and transformation.
-- **PostgreSQL** — Relational database storage.
-- **SQL** — Transaction analysis and reporting.
-- **SQLAlchemy** — Python-to-database connectivity.
-- **Psycopg2** — PostgreSQL database driver.
-- **Logging** — Pipeline activity tracking.
-- **VS Code** — Development environment.
+- **Python** — pipeline orchestration and data processing
+- **pandas** — data extraction, cleaning, and transformation
+- **PostgreSQL** — relational database storage
+- **SQLAlchemy** — Python-to-database integration
+- **psycopg2** — PostgreSQL database driver
+- **SQL** — transaction analysis and aggregation
+- **Git and GitHub** — version control and project hosting
+- **Logging** — pipeline execution records
 
 ## Project Structure
 
@@ -43,62 +56,77 @@ Bank_Transaction_Data_Pipeline/
 │   ├── extract.py
 │   ├── transform.py
 │   ├── load.py
-│   ├── main.py
-│   └── data_quality.py
+│   ├── data_quality.py
+│   └── main.py
+├── .gitignore
 └── README.md
 ```
 
 ## ETL Process
 
 ### 1. Extract
-Read raw bank transaction records from a CSV file using Pandas.
+Read transaction records from a CSV file into a pandas DataFrame.
 
 ### 2. Transform
-Clean the data by removing duplicate records, validating required fields, converting transaction amounts to numeric values, converting dates to datetime values, and assigning transaction categories.
+Clean and prepare the data by removing duplicate records, validating required columns, converting data types, handling invalid values, and assigning transaction categories based on amount.
 
 ### 3. Load
-Load the cleaned transaction data into a PostgreSQL table named `transactions`.
+Connect to PostgreSQL and load the processed data into the `transactions` table in the `bank_transactions` database.
 
-### 4. Data Quality
-Generate a report containing record counts, duplicate information, missing-value statistics, and the number of records loaded.
+### 4. Data Quality and Logging
+Generate a data quality report and record pipeline execution information in a log file.
 
 ### 5. SQL Analytics
-Use SQL queries to calculate transaction counts, total amounts, average amounts, minimum values, and maximum values.
+Run SQL queries to calculate transaction statistics and analyse transaction categories.
 
-## Initial Results
+## Results
 
-The pipeline was successfully executed against the current sample dataset.
+The initial test dataset contained 8 transactions.
 
 | Metric | Result |
 |---|---:|
 | Transactions loaded | 8 |
 | Total transaction amount | 23,600 |
 | Average transaction amount | 2,950 |
-| Smallest transaction | 300 |
-| Largest transaction | 7,500 |
+| Minimum transaction amount | 300 |
+| Maximum transaction amount | 7,500 |
 
-These results describe the current sample dataset and may change when new data is loaded.
+These results describe the small test dataset used during development; they are not representative of a real bank's transaction volume.
 
 ## Key Skills Demonstrated
 
-- ETL pipeline development
-- Data cleaning and validation
-- Python programming
-- PostgreSQL integration
-- SQL aggregation and analysis
-- Data quality reporting
-- Logging and pipeline monitoring
-- Project organisation and documentation
+- Building an end-to-end ETL workflow
+- Cleaning and validating structured data
+- Connecting Python applications to PostgreSQL
+- Writing SQL aggregation queries
+- Generating data quality reports
+- Implementing application logging
+- Managing code with Git and GitHub
+- Organising a project into reusable Python modules
+
+## Security
+
+Database credentials are requested at runtime rather than hardcoded in the source code. The `.gitignore` file excludes the raw CSV data and pipeline log from version control.
+
+Never commit database passwords, API keys, private customer information, or other sensitive data to a public repository.
 
 ## Future Improvements
 
-- Automate pipeline execution.
-- Add more robust exception handling and database transactions.
-- Use environment variables to protect database credentials.
-- Add automated tests for data quality.
-- Introduce larger datasets and more advanced SQL analytics.
-- Publish the project on GitHub.
+- Add automated tests using `pytest`
+- Improve data quality checks and validation rules
+- Replace table overwriting with incremental loading and duplicate prevention
+- Add environment-based database configuration
+- Add database constraints and transaction handling
+- Introduce automated pipeline scheduling
+- Add dashboards for transaction analysis
+- Expand testing with a larger, synthetic transaction dataset
 
 ## Author
 
-Computer Science and Mathematics student developing practical Data Engineering skills through hands-on projects.
+**Ngimphiwe-Code**
+
+GitHub: [View my projects](https://github.com/Ngimphiwe-Code)
+
+---
+
+*This project is an educational portfolio project using sample transaction data. It is not affiliated with or endorsed by any financial institution.
