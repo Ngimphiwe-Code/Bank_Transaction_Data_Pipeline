@@ -4,9 +4,9 @@ A Python-based ETL pipeline that extracts, cleans, validates, and loads bank tra
 
 ## Project Overview
 
-This project demonstrates a practical data engineering workflow using Python, pandas, SQLAlchemy, and PostgreSQL. It automates the movement of transaction data from a CSV file into a relational database, while generating data quality reports and pipeline logs.
+This project demonstrates a practical data engineering workflow using Python, pandas, SQLAlchemy, and PostgreSQL. It automates the movement of transaction data from a CSV file into a relational database, generates data quality reports, and records pipeline execution information through logging.
 
-The project was built to develop practical skills in data processing, database integration, SQL analytics, and version control.
+The project was built to develop practical skills in data processing, database integration, SQL analytics, automated testing, and version control.
 
 ## Architecture
 
@@ -37,7 +37,9 @@ SQL Analysis and Reporting
 - **SQLAlchemy** — Python-to-database integration
 - **psycopg2** — PostgreSQL database driver
 - **SQL** — transaction analysis and aggregation
+- **pytest** — automated testing
 - **Git and GitHub** — version control and project hosting
+- **GitHub Actions** — continuous integration and automated test execution
 - **Logging** — pipeline execution records
 
 ## Project Structure
@@ -58,30 +60,43 @@ Bank_Transaction_Data_Pipeline/
 │   ├── load.py
 │   ├── data_quality.py
 │   └── main.py
+├── tests/
+│   ├── test_load.py
+│   └── test_transform.py
+├── .github/
+│   └── workflows/
 ├── .gitignore
+├── requirements.txt
 └── README.md
 ```
 
 ## ETL Process
 
 ### 1. Extract
+
 Read transaction records from a CSV file into a pandas DataFrame.
 
 ### 2. Transform
-Clean and prepare the data by removing duplicate records, validating required columns, converting data types, handling invalid values, and assigning transaction categories based on amount.
+
+Clean and prepare the data by removing duplicate records, validating required columns, converting data types, handling missing or invalid values, and assigning transaction categories based on transaction amount.
 
 ### 3. Load
+
 Connect to PostgreSQL and load the processed data into the `transactions` table in the `bank_transactions` database.
 
+The pipeline uses table replacement for its current loading workflow. Incremental loading and database-level duplicate prevention are potential future improvements.
+
 ### 4. Data Quality and Logging
-Generate a data quality report and record pipeline execution information in a log file.
+
+Generate a data quality report containing transaction statistics and record pipeline execution information in a log file.
 
 ### 5. SQL Analytics
-Run SQL queries to calculate transaction statistics and analyse transaction categories.
+
+Use SQL queries to calculate transaction statistics, including record counts, total amounts, averages, minimums, and maximums.
 
 ## Results
 
-The initial test dataset contained 8 transactions.
+The test dataset contained eight unique transactions after cleaning and loading.
 
 | Metric | Result |
 |---|---:|
@@ -91,7 +106,51 @@ The initial test dataset contained 8 transactions.
 | Minimum transaction amount | 300 |
 | Maximum transaction amount | 7,500 |
 
-These results describe the small test dataset used during development; they are not representative of a real bank's transaction volume.
+These results describe a small sample dataset used during development. They are not representative of a real bank's transaction volume.
+
+## Automated Testing and Continuous Integration
+
+The project uses `pytest` to test data transformation and database-loading behaviour.
+
+The test suite contains eight automated tests covering transformation rules and loading behaviour. All eight tests passed during local verification.
+
+GitHub Actions is configured to run automated tests when changes are pushed to the repository. The workflow has also completed successfully.
+
+### Run the tests locally
+
+Install the project dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Run the automated tests:
+
+```bash
+python -m pytest -v
+```
+
+## Running the Pipeline
+
+### Prerequisites
+
+- Python installed
+- PostgreSQL installed and running
+- A PostgreSQL database named `bank_transactions`
+- The required database connection settings
+- The sample CSV file in the expected project location
+
+### Execute the pipeline
+
+From the project root directory, run:
+
+```bash
+python -m src.main
+```
+
+The pipeline extracts, transforms, and loads the transaction data, generates a data quality report, and records execution information.
+
+Ensure that PostgreSQL is running and that your database connection settings are correct before executing the pipeline.
 
 ## Key Skills Demonstrated
 
@@ -101,25 +160,26 @@ These results describe the small test dataset used during development; they are 
 - Writing SQL aggregation queries
 - Generating data quality reports
 - Implementing application logging
-- Managing code with Git and GitHub
+- Writing and running automated tests
+- Configuring continuous integration with GitHub Actions
 - Organising a project into reusable Python modules
+- Managing code with Git and GitHub
 
 ## Security
 
-Database credentials are requested at runtime rather than hardcoded in the source code. The `.gitignore` file excludes the raw CSV data and pipeline log from version control.
+Database credentials are requested at runtime rather than hardcoded in the source code.
 
-Never commit database passwords, API keys, private customer information, or other sensitive data to a public repository.
+The `.gitignore` file is intended to exclude raw data and pipeline logs from version control where configured. Database passwords, API keys, private customer information, and other sensitive data must never be committed to a public repository.
 
 ## Future Improvements
 
-- Add automated tests using `pytest`
+- Implement incremental loading and database-level duplicate prevention
 - Improve data quality checks and validation rules
-- Replace table overwriting with incremental loading and duplicate prevention
 - Add environment-based database configuration
-- Add database constraints and transaction handling
-- Introduce automated pipeline scheduling
-- Add dashboards for transaction analysis
-- Expand testing with a larger, synthetic transaction dataset
+- Introduce database constraints and transaction handling
+- Add automated pipeline scheduling
+- Develop dashboards for transaction analysis
+- Expand testing with a larger synthetic transaction dataset
 
 ## Author
 
@@ -129,12 +189,4 @@ GitHub: [View my projects](https://github.com/Ngimphiwe-Code)
 
 ---
 
-*This project is an educational portfolio project using sample transaction data. It is not affiliated with or endorsed by any financial institution.
-## Running Automated Tests
-
-This project uses pytest to verify data transformation logic.
-
-### Install pytest
-
-```bash
-python -m pip install pytest
+*This project is an educational portfolio project using sample transaction data. It is not affiliated with or endorsed by any financial institution.*
