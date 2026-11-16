@@ -2,10 +2,10 @@
 import logging
 from pathlib import Path
 
-from extract import extract_data
-from transform import transform_data
-from load import load_data
-from data_quality import generate_report
+from src.extract import extract_data
+from src.transform import transform_data
+from src.load import load_data
+from src.data_quality import generate_report
 
 
 # Locate the project folder

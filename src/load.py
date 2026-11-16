@@ -1,12 +1,17 @@
 
-import logging
-from pathlib import Path
-from getpass import getpass
 
+import logging
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, URL
 
 # Locate the project folder
 PROJECT_DIR = Path(__file__).resolve().parent.parent
+
+# Load credentials from the .env file
+load_dotenv(PROJECT_DIR / ".env")
 
 # Configure logging
 LOG_DIR = PROJECT_DIR / "logs"
@@ -16,47 +21,49 @@ logging.basicConfig(
     filename=str(LOG_DIR / "pipeline.log"),
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    force=True
+    force=True,
 )
 
 logger = logging.getLogger(__name__)
-
 
 def load_data(data):
     """Load cleaned transaction data into PostgreSQL."""
 
     logger.info("Starting PostgreSQL data load")
 
-    username = input(
-        "PostgreSQL username [postgres]: "
-    ).strip() or "postgres"
+    username = os.getenv("DB_USER", "postgres")
+    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("DB_HOST", "localhost")
+    port = int(os.getenv("DB_PORT", "5432"))
+    database = os.getenv("DB_NAME", "bank_transactions")
 
-    password = getpass("Enter your PostgreSQL password: ")
+    if not password:
+        raise ValueError(
+            "DB_PASSWORD is missing. Check the .env file in your project folder."
+        )
 
     connection_url = URL.create(
         drivername="postgresql+psycopg2",
         username=username,
         password=password,
-        host="localhost",
-        port=5432,
-        database="bank_transactions"
+        host=host,
+        port=port,
+        database=database,
     )
 
     engine = create_engine(connection_url)
 
     try:
-        # Test the connection
         with engine.connect():
             logger.info("PostgreSQL connection successful")
 
-        # Load cleaned data into the transactions table
         rows_loaded = len(data)
 
         data.to_sql(
             name="transactions",
             con=engine,
             if_exists="replace",
-            index=False
+            index=False,
         )
 
         logger.info("Data loaded successfully")
@@ -72,4 +79,3 @@ def load_data(data):
 
     finally:
         engine.dispose()
-

@@ -1,4 +1,3 @@
-
 import pandas as pd
 from unittest.mock import patch, MagicMock
 
@@ -19,10 +18,15 @@ def test_load_data_writes_transactions_table():
     mock_connection = MagicMock()
     mock_engine.connect.return_value.__enter__.return_value = mock_connection
 
-    with patch("src.load.input", return_value="postgres"), \
-         patch("src.load.getpass", return_value="test_password"), \
-         patch("src.load.create_engine", return_value=mock_engine), \
-         patch.object(data, "to_sql") as mock_to_sql:
+    with patch.dict("os.environ", {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "test_password",
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432",
+        "DB_NAME": "bank_transactions"
+    }), \
+    patch("src.load.create_engine", return_value=mock_engine), \
+    patch.object(data, "to_sql") as mock_to_sql:
 
         load.load_data(data)
 
@@ -47,14 +51,19 @@ def test_load_data_handles_database_failure():
     mock_connection = MagicMock()
     mock_engine.connect.return_value.__enter__.return_value = mock_connection
 
-    with patch("src.load.input", return_value="postgres"), \
-         patch("src.load.getpass", return_value="test_password"), \
-         patch("src.load.create_engine", return_value=mock_engine), \
-         patch.object(
-             data,
-             "to_sql",
-             side_effect=Exception("Database error")
-         ):
+    with patch.dict("os.environ", {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "test_password",
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432",
+        "DB_NAME": "bank_transactions"
+    }), \
+    patch("src.load.create_engine", return_value=mock_engine), \
+    patch.object(
+        data,
+        "to_sql",
+        side_effect=Exception("Database error")
+    ):
 
         try:
             load.load_data(data)

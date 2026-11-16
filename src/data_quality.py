@@ -40,7 +40,7 @@ def generate_report(raw_data, clean_data, rows_loaded):
         "",
         "PIPELINE STATUS: SUCCESSFUL",
     ])
-git add .
+
     report_path.write_text(
         "\n".join(report_lines) + "\n",
         encoding="utf-8"
