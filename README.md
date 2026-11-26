@@ -2,6 +2,11 @@
 
 A Python-based ETL pipeline that extracts, cleans, validates, and loads bank transaction data into PostgreSQL for analysis, with a Power BI dashboard for visual insights.
 
+### Download the Power BI Dashboard
+
+[Download Bank Transaction Dashboard (.pbix)](Bank_Transaction_Dashboard.pbix.pbix)
+
+Open the downloaded file using Microsoft Power BI Desktop.
 ## Project Overview
 
 This project demonstrates a practical data engineering workflow using Python, pandas, SQLAlchemy, PostgreSQL, SQL, and Power BI.
